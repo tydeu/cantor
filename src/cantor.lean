@@ -1,5 +1,6 @@
 import irrefl
 import diagonal
+import data.stream
 
 universes u v
 
@@ -7,12 +8,10 @@ namespace cantor
 
 open diagonal
 
-/- Cantor's diagonal argument generalized to types with irreflexive maps -/
-
--- Diagonal Argument for Types
+-- Cantor's diagonal argument generalized to types with irreflexive maps
 theorem type_cantor {A : Sort u} {B : Sort v} [has_anot B] :
-not exists M : A -> (A -> B), forall f : A -> B, exists a : A, f = M a :=
-begin
+not exists M : A -> (A -> B), forall f : A -> B, exists a : A, f = M a 
+:= begin
   by_contradiction h,
   exact exists.elim h begin
     intro M,
@@ -27,12 +26,26 @@ begin
   end
 end
 
+/- Specializations of the generalized diagonal argument -/
+
 -- Diagonal Argument for Closed Binary Functions
 theorem closed_cantor {A : Sort u} [has_anot A] :
-not exists M : A -> (A -> A), forall f : A -> A, exists a : A, f = M a := type_cantor
+not exists M : A -> (A -> A), forall f : A -> A, exists a, f = M a 
+:= type_cantor
 
 -- Diagonal Argument for Relations
 theorem relational_cantor {A : Sort u} :
-not exists R : A -> A -> Prop, forall S : A -> Prop, exists a : A, S = R a := type_cantor
+not exists R : A -> A -> Prop, forall S : A -> Prop, exists a, S = R a 
+:= type_cantor
+
+-- Diagonal Argument for Streams
+theorem stream_cantor {a : Type u} [has_anot a] :
+not exists M : nat -> stream a, forall S : stream a, exists n, S = M n 
+:= type_cantor
+
+-- Diagonal Argument for Bit Streams
+theorem bit_stream_cantor:
+not exists M : nat -> stream bool, forall S : stream bool, exists n, S = M n 
+:= stream_cantor
 
 end cantor
