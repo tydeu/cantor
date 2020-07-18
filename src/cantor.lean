@@ -45,12 +45,12 @@ not exists R : A -> set A, forall S : set A, exists a, S = R a
 
 -- Diagonal Argument for Streams
 theorem stream_cantor {a : Type u} [has_anot a]:
-not exists M : nat -> stream a, forall S : stream a, exists n, S = M n 
+not exists M : stream (stream a), forall S : stream a, exists n, S = M n 
 := type_cantor
 
--- Diagonal Argument for Bit Streams
-theorem bit_stream_cantor:
-not exists M : nat -> stream bool, forall S : stream bool, exists n, S = M n 
+-- Diagonal Argument for Boolean (Bit) Streams
+theorem bool_stream_cantor:
+not exists M : stream (stream bool), forall S : stream bool, exists n, S = M n 
 := stream_cantor
 
 end cantor
